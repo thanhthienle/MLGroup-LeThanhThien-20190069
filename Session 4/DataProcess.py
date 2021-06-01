@@ -18,7 +18,7 @@ def gen_data_and_vocab():
             print('Processing: {}-{}'.format(group_id, newsgroup))
 
             for filename, filepath in files:
-                with open(filepath) as f:
+                with open(filepath, encoding='latin-1') as f:
                     text = f.read().lower()
                     words = re.split('\W+', text)
                     if word_count is not None:
@@ -48,7 +48,7 @@ def gen_data_and_vocab():
     vocab = [word for word, freq in
              zip(word_count.keys(), word_count.values()) if freq > 10]
     vocab.sort()
-    with open('w2v/vocab-raw.txt', 'w') as f:
+    with open('w2v/vocab-raw.txt', 'w', encoding='latin-1') as f:
         f.write('\n'.join(vocab))
 
         test_data = collect_data_from(
@@ -56,18 +56,18 @@ def gen_data_and_vocab():
             newsgroup_list=newsgroup_list
         )
 
-    with open('w2v/20news-train-raw.txt', 'w') as f:
+    with open('w2v/20news-train-raw.txt', 'w', encoding='latin-1') as f:
         f.write('\n'.join(train_data))
 
-    with open('w2v/20news-test-raw.txt', 'w') as f:
+    with open('w2v/20news-test-raw.txt', 'w', encoding='latin-1') as f:
         f.write('\n'.join(test_data))
 
 
 def encode_data(data_path, vocab_path):
-    with open(vocab_path) as f:
+    with open(vocab_path, encoding='latin-1') as f:
         vocab = dict([(word, word_ID + 2)
                       for word_ID, word in enumerate(f.read().splitlines())])
-    with open(data_path) as f:
+    with open(data_path, encoding='latin-1') as f:
         documents = [(line.split('<fff>')[0], line.split('<fff>')[1], line.split('<fff>')[2])
                      for line in f.read().splitlines()]
     encoded_data = []
@@ -93,7 +93,7 @@ def encode_data(data_path, vocab_path):
 
     dir_name = '/'.join(data_path.split('/')[:-1])
     file_name = '-'.join(data_path.split('/')[-1].split('-')[:-1]) + '-encoded.txt'
-    with open(dir_name + '/' + file_name, 'w') as f:
+    with open(dir_name + '/' + file_name, 'w', encoding='latin-1') as f:
         f.write('\n'.join(encoded_data))
 
 
